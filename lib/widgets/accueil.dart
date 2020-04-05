@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/data_provider.dart';
-import '../shared/colors.dart';
 import '../widgets/resto_item.dart';
 
 class Accueil extends StatefulWidget {
@@ -17,32 +16,47 @@ class _AccueilState extends State<Accueil> {
   Widget build(BuildContext context) {
     
     final restos = Provider.of<RestoProvider>(context).resto;
-    Random r = new Random();
-    int rr = r.nextInt(restos.length);
-
     
-    
-    return Column(
-      
-      children: restos.map((resto) {
-        return ChangeNotifierProvider.value(
-          value: restos[rr],
-          child: RestoItem(),
-        );
-      }).toList()
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          SizedBox(
+            height: 50,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: 8,
+              itemBuilder: (ctx, i) {
+                return Column(
+                  children: <Widget>[
+                    FlutterLogo(),
+                    Container(
+                      height: 20,
+                      width: 60,
+                      child: Text(i.toString())
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
 
-      // child: ListView.builder(
-      //   physics: BouncingScrollPhysics(),
-      //   padding: EdgeInsets.only(bottom: 70),
-      //   itemCount: restos.length,
-      //   itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
-      //     value: restos[i],
-      //     child: RestoItem(),
-      //   ),
-      // ),
+          ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            padding: EdgeInsets.only(bottom: 70),
+            itemCount: restos.length,
+            itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
+              value: restos[i],
+              child: RestoItem(),
+            ),
+          ),
+
+        ],
+        
+      ),
     );      
-    
-  }
+    }
+  } // state
 
 
 
@@ -266,4 +280,17 @@ class _AccueilState extends State<Accueil> {
   //   );
   // }
 
-}// state
+
+
+
+
+
+
+//map in column children
+
+// children: restos.map((resto) {
+//   return ChangeNotifierProvider.value(
+//     value: restos[rr],
+//     child: RestoItem(),
+//   );
+// }).toList()

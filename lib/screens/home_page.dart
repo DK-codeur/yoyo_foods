@@ -88,158 +88,103 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     
-    return Scaffold(
-      body: new DrawerScaffold(
-        percentage: 0.7,
-          appBar: buildAppBarProps(context),
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).requestFocus(new FocusNode());
+      },
+      child: Scaffold(
+        body: new DrawerScaffold(
+          percentage: 0.7,
+            appBar: buildAppBarProps(context),
 
-          menuView: new MenuView(
-            menu: menu,
-            animation: true,
-            color: Colors.black87,
-            selectedItemId: selectedMenuItemId,
-            background: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage(
-                'assets/images/back.png',
-              )
-            ),
-
-            onMenuItemSelected: (String itemId) {
-              selectedMenuItemId = itemId;
-              if (itemId == 'accueil') {
-                setState(() => _widget = Accueil());
-              } else if (itemId == 'offline') {
-                setState(() => _widget = RestoOfflineScreen());
-              } else if (itemId == 'login') {
-                setState(() {
-                  selectedMenuItemId = 'accueil';
-                  _widget = Accueil();
-                });
-                Navigator.of(context).pushNamed(LoginScreen.routename);
-              } else {
-                setState(() => _widget = Center(child: Text("Deconnecting...")));
-              }
-            },
-          ),
-          
-          contentView: Screen(
-            contentBuilder: (context) => LayoutBuilder(
-              builder: (context, constraint) => Container(
-                color: Colors.white,
-                width: constraint.maxWidth,
-                height: constraint.maxHeight,
-                child: FutureBuilder(
-                  future: refreshResto(context),
-                  builder: (ctx, snapshot) {
-                    if(snapshot.connectionState == ConnectionState.waiting) {
-                      print('waiting');
-                      return Center(child: Text('Loading...'),);
-                    } else{ 
-
-                      //hasData...
-                      
-                      print('Stop load');
-
-                      return  RefreshIndicator(
-                        onRefresh: () => refreshResto(context),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            Container(
-                              height: 50,
-                              color: Colors.black,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Text(
-                                    'YoYo',
-                                    style: TextStyle(
-                                      fontSize:22,
-                                      fontFamily: 'Poppins',
-                                      color: white
-                                    ),
-                                    
-                                  ),
-                                  Text(
-                                    'Foods',
-                                    style: TextStyle(
-                                      fontSize:25,
-                                      fontFamily: 'Pacifico',
-                                      color: Colors.redAccent
-                                    ),
-                                  ),
-                                ],
-                              )
-                            ),
-
-                            Flexible(
-                              // flex: 10,
-                              fit: FlexFit.tight,
-                              child: ListView(
-                                children: <Widget>[
-                                  SizedBox(
-                                    height: 50,
-                                    child: ListView.builder(
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount: 8,
-                                      itemBuilder: (ctx, i) {
-                                        return Column(
-                                          children: <Widget>[
-                                            FlutterLogo(),
-                                            Container(
-                                              height: 20,
-                                              width: 60,
-                                              child: Text(i.toString())
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    ),
-                                  ),
-
-                                  _widget
-                                ],
-                              )
-                            )
-                          ],
-                        )
-                        
-                      );
-                    }
-                  }
-                 
+            menuView: new MenuView(
+              menu: menu,
+              animation: true,
+              color: Colors.black87,
+              selectedItemId: selectedMenuItemId,
+              background: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage(
+                  'assets/images/back.png',
                 )
+              ),
+
+              onMenuItemSelected: (String itemId) {
+                selectedMenuItemId = itemId;
+                if (itemId == 'accueil') {
+                  setState(() => _widget = Accueil());
+                } else if (itemId == 'offline') {
+                  setState(() => _widget = RestoOfflineScreen());
+                } else if (itemId == 'login') {
+                  setState(() {
+                    selectedMenuItemId = 'accueil';
+                    _widget = Accueil();
+                  });
+                  Navigator.of(context).pushNamed(LoginScreen.routename);
+                } else {
+                  setState(() => _widget = Center(child: Text("Deconnecting...")));
+                }
+              },
             ),
-            // color: white,
-          )
+            
+            contentView: Screen(
+              contentBuilder: (context) => LayoutBuilder(
+                builder: (context, constraint) => Container(
+                  color: Colors.white,
+                  width: constraint.maxWidth,
+                  height: constraint.maxHeight,
+
+                  child: FutureBuilder(
+                    future: refreshResto(context),
+                    builder: (ctx, snapshot) {
+                      if(snapshot.connectionState == ConnectionState.waiting) {
+                        print('waiting');
+                        return Center(child: Text('Loading...'),);
+                      } else{ 
+
+                        //hasData...
+                        
+                        print('Stop load');
+
+                        return  RefreshIndicator(
+                          onRefresh: () => refreshResto(context),
+                          child: _widget
+                          
+                        );
+                      }
+                    }
+                   
+                  )
+              ),
+              // color: white,
+            )
+          ),
+        
         ),
-      
-      ),
 
-      floatingActionButton: FloatingActionButton(
-        child: _isLoading ? CircularProgressIndicator(backgroundColor: Colors.white,) : Icon(Icons.add_circle) ,
-        tooltip: 'Add resto',
-        shape: (_isLoading) ? CircleBorder() : DiamondBorder(),
-        backgroundColor: Colors.black,
-        onPressed: (_isLoading) ? () {} : () => Navigator.push(
-          context, 
-          new MaterialPageRoute(
-            builder: (context) {
-              return new EditRestoScreen(
-                title: ' Ajouter un restaurant',
-                icon: Icons.add_box,
-              );
-            }
-          )),
-        elevation: 20,
-      ),
+        floatingActionButton: FloatingActionButton(
+          child: _isLoading ? CircularProgressIndicator(backgroundColor: Colors.white,) : Icon(Icons.add_circle) ,
+          tooltip: 'Add resto',
+          shape: (_isLoading) ? CircleBorder() : DiamondBorder(),
+          backgroundColor: Colors.black,
+          onPressed: (_isLoading) ? () {} : () => Navigator.push(
+            context, 
+            new MaterialPageRoute(
+              builder: (context) {
+                return new EditRestoScreen(
+                  title: ' Ajouter un restaurant',
+                  icon: Icons.add_box,
+                );
+              }
+            )),
+          elevation: 20,
+        ),
 
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      ),
     );
   }
 
   
   }
 
-  

@@ -10,6 +10,7 @@ import './screens/login_screen.dart';
 //flutter create --androidx yoyo_food
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
