@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         title: 'YoYo foods',
         theme: ThemeData(
           primarySwatch: Colors.red,
-          primaryColor: Colors.black
+          // primaryColor: Colors.red
         ),
         home: HomePage(),
         debugShowCheckedModeBanner: false,

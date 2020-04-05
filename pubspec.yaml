@@ -55,6 +55,14 @@ flutter:
    - assets/images/bg.png
    - assets/images/back.png
    - assets/images/load_img.png
+   - assets/images/beer.png
+   - assets/images/breakfast.png
+   - assets/images/burger.png
+   - assets/images/cheeseburger.png
+   - assets/images/coffee-cup.png
+   - assets/images/cupcake.png
+   - assets/images/pizza.png
+   - assets/images/turkey.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

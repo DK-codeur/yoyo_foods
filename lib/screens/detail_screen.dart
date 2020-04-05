@@ -1,4 +1,5 @@
 import 'package:edge_alert/edge_alert.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/data_provider.dart';
@@ -149,18 +150,31 @@ class _DetailScreenState extends State<DetailScreen> {
                             ),
                           ),
                           onPressed: () {
+                            // Navigator.push(
+                            //   context,
+                            //   new MaterialPageRoute(
+                            //     builder: (context) {
+                            //       return new EditRestoScreen(
+                            //         title: ' Modifier le resto',
+                            //         icon: Icons.edit,
+                            //       );
+                            //     },
+                            //     settings: RouteSettings(arguments: resto.id) 
+                            //   ) 
+                            // );
+
                             Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                builder: (context) {
-                                  return new EditRestoScreen(
-                                    title: ' Modifier le resto',
-                                    icon: Icons.edit,
-                                  );
-                                },
-                                settings: RouteSettings(arguments: resto.id) 
-                              ) 
-                            );
+                            context, 
+                              CupertinoPageRoute(
+                              builder: (context) => EditRestoScreen(
+                                title: ' Modifier le resto',
+                                icon: Icons.edit,
+                              ),
+                              settings: RouteSettings(
+                                arguments: resto.id
+                              )
+                            ),
+                          );
                           },
                           color: Colors.blue,
                           shape: RoundedRectangleBorder(

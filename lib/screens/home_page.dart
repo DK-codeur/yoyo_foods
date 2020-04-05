@@ -1,7 +1,6 @@
 import 'package:drawerbehavior/drawerbehavior.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:yoyo_foods/shared/colors.dart';
 import 'package:yoyo_foods/widgets/app_bar_props.dart';
 
 import '../providers/data_provider.dart';

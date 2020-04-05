@@ -1,7 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:yoyo_foods/screens/categories.dart';
+import 'package:yoyo_foods/shared/public_shared.dart';
 import '../providers/data_provider.dart';
 import '../widgets/resto_item.dart';
 
@@ -20,35 +20,22 @@ class _AccueilState extends State<Accueil> {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          SizedBox(
-            height: 50,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: 8,
-              itemBuilder: (ctx, i) {
-                return Column(
-                  children: <Widget>[
-                    FlutterLogo(),
-                    Container(
-                      height: 20,
-                      width: 60,
-                      child: Text(i.toString())
-                    ),
-                  ],
-                );
-              },
-            ),
-          ),
+          Categories(),
 
-          ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            padding: EdgeInsets.only(bottom: 70),
-            itemCount: restos.length,
-            itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
-              value: restos[i],
-              child: RestoItem(),
-            ),
+          Column(
+            children: <Widget>[
+              buildTitleText('All your resto here '),
+              ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                padding: EdgeInsets.only(bottom: 70),
+                itemCount: restos.length,
+                itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
+                  value: restos[i],
+                  child: RestoItem(),
+                ),
+              ),
+            ],
           ),
 
         ],

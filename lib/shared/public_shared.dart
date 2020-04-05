@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'colors.dart';
+
 final String publicLink = 'http://192.168.43.59:8024/yoyo_food_api';
 
 
@@ -35,4 +37,25 @@ class DiamondBorder extends ShapeBorder {
   ShapeBorder scale(double t) {
     return null;
   }
+}
+
+
+Padding buildTitleText(String text) {
+  return Padding(
+    padding: const EdgeInsets.fromLTRB(11, 24, 0, 10),
+    child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            text,
+            style: TextStyle(
+              fontFamily: 'Poppins',
+              fontSize: 17.0,
+              fontWeight: FontWeight.w600,
+              color: darkText 
+            ),
+          ),
+        ],
+    ),
+  );
 }

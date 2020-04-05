@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/resto.dart';
@@ -31,7 +32,7 @@ class _RestoItemState extends State<RestoItem> {
               decoration: BoxDecoration(
                 // color: primaryPink, 
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.grey[300])
+                border: Border.all(color: Colors.grey[400])
               ),
 
               child: Row(
@@ -43,10 +44,17 @@ class _RestoItemState extends State<RestoItem> {
                     ),
 
                     child: GestureDetector(
-                      onTap: () => Navigator.of(context).pushNamed(
-                        DetailScreen.routeName,
-                        arguments: resto.id
+                      onTap: () => Navigator.push(
+                        context, 
+                        CupertinoPageRoute(
+                          builder: (context) => DetailScreen(),
+                          settings: RouteSettings(
+                            arguments: resto.id
+                          )
+                        
+                        )
                       ),
+                      
                       child: FadeInImage.assetNetwork(
                         placeholder: 'assets/images/load_img.png',
                         image: ('$publicLink/${resto.image}'.isEmpty) ? '$publicLink/images/default.jpg' : '$publicLink/${resto.image}',
