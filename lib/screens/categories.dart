@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:yoyo_foods/shared/colors.dart';
 import 'package:yoyo_foods/shared/public_shared.dart';
 import 'package:yoyo_foods/widgets/cat_model.dart';
 import 'package:yoyo_foods/widgets/categorie_item.dart';

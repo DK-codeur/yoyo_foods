@@ -15,31 +15,36 @@ class _AccueilState extends State<Accueil> {
   @override
   Widget build(BuildContext context) {
     
-    final restos = Provider.of<RestoProvider>(context).resto;
+    final restos = Provider.of<RestoProvider>(context).restoOffline;
     
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          Categories(),
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).requestFocus(new FocusNode());
+      },
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Categories(),
 
-          Column(
-            children: <Widget>[
-              buildTitleText('All your resto here '),
-              ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                padding: EdgeInsets.only(bottom: 70),
-                itemCount: restos.length,
-                itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
-                  value: restos[i],
-                  child: RestoItem(),
+            Column(
+              children: <Widget>[
+                buildTitleText('All your resto here '),
+                ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  padding: EdgeInsets.only(bottom: 70),
+                  itemCount: restos.length,
+                  itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
+                    value: restos[i],
+                    child: RestoItem(),
+                  ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
 
-        ],
-        
+          ],
+          
+        ),
       ),
     );      
     }

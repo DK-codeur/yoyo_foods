@@ -87,44 +87,11 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).requestFocus(new FocusNode());
-      },
-      child: Scaffold(
+    return Scaffold(
         body: new DrawerScaffold(
           percentage: 0.7,
             appBar: buildAppBarProps(context),
-
-            menuView: new MenuView(
-              menu: menu,
-              animation: true,
-              color: Colors.black87,
-              selectedItemId: selectedMenuItemId,
-              background: DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage(
-                  'assets/images/back.png',
-                )
-              ),
-
-              onMenuItemSelected: (String itemId) {
-                selectedMenuItemId = itemId;
-                if (itemId == 'accueil') {
-                  setState(() => _widget = Accueil());
-                } else if (itemId == 'offline') {
-                  setState(() => _widget = RestoOfflineScreen());
-                } else if (itemId == 'login') {
-                  setState(() {
-                    selectedMenuItemId = 'accueil';
-                    _widget = Accueil();
-                  });
-                  Navigator.of(context).pushNamed(LoginScreen.routename);
-                } else {
-                  setState(() => _widget = Center(child: Text("Deconnecting...")));
-                }
-              },
-            ),
+            menuView: buildMenuView(context),
             
             contentView: Screen(
               contentBuilder: (context) => LayoutBuilder(
@@ -134,7 +101,8 @@ class _HomePageState extends State<HomePage> {
                   height: constraint.maxHeight,
 
                   child: FutureBuilder(
-                    future: refreshResto(context),
+                    // future: refreshResto(context),
+                    future: Provider.of<RestoProvider>(context).fetchAndSetOfflineResto(),
                     builder: (ctx, snapshot) {
                       if(snapshot.connectionState == ConnectionState.waiting) {
                         print('waiting');
@@ -142,14 +110,20 @@ class _HomePageState extends State<HomePage> {
                       } else{ 
 
                         //hasData...
-                        
-                        print('Stop load');
+                        if(snapshot.data != null) {
+                          print(snapshot.data);
 
-                        return  RefreshIndicator(
-                          onRefresh: () => refreshResto(context),
-                          child: _widget
-                          
-                        );
+                          print('Stop load');
+
+                          return  RefreshIndicator(
+                            onRefresh: () => refreshResto(context),
+                            child: _widget
+                          );
+                        } else {
+                          print('Erorrr');
+                          return null;
+                        }
+                        
                       }
                     }
                    
@@ -180,10 +154,41 @@ class _HomePageState extends State<HomePage> {
         ),
 
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      ),
+      
     );
   }
 
-  
+  MenuView buildMenuView(BuildContext context) {
+    return new MenuView(
+      menu: menu,
+      animation: true,
+      color: Colors.black87,
+      selectedItemId: selectedMenuItemId,
+      background: DecorationImage(
+        fit: BoxFit.cover,
+        image: AssetImage(
+          'assets/images/back.png',
+        )
+      ),
+
+      onMenuItemSelected: (String itemId) async {
+        selectedMenuItemId = itemId;
+        if (itemId == 'accueil') {
+          setState(() => _widget = Accueil());
+        } else if (itemId == 'offline') {
+          setState(() => _widget = RestoOfflineScreen());
+        } else if (itemId == 'login') {
+          setState(() {
+            selectedMenuItemId = 'accueil';
+            _widget = Accueil();
+          });
+
+          await Navigator.of(context).pushNamed(LoginScreen.routename);
+        } else {
+          setState(() => _widget = Center(child: Text("Deconnecting...")));
+        }
+      },
+    );
   }
+}
 

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/resto.dart';
+import '../providers/models/resto.dart';
 import 'dart:math' as math;
 
 import '../screens/detail_screen.dart';

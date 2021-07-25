@@ -2,7 +2,7 @@ import 'package:edge_alert/edge_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/data_provider.dart';
-import '../providers/resto.dart';
+import '../providers/models/resto.dart';
 import '../shared/colors.dart';
 
 class EditRestoScreen extends StatefulWidget {

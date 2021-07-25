@@ -25,6 +25,8 @@ dependencies:
   sqflite: ^1.1.6
   image_picker: ^0.6.0+9
   path_provider: ^1.5.0
+  path: ^1.6.4
+  # dio: ^3.0.8
   edge_alert: ^0.0.1
   animatedloginbutton: ^0.1.1
   flutter_auth_buttons: ^0.6.0

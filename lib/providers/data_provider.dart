@@ -1,15 +1,21 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import '../providers/resto.dart';
+import 'package:yoyo_foods/sqflite/db.dart';
+import '../providers/models/resto.dart';
 import 'package:http/http.dart' as http;
 
 class RestoProvider with ChangeNotifier{
   final String publicLink = 'http://192.168.43.59:8024/yoyo_food_api/api/resto';
-  List<Resto> _resto = [];
 
-  //getResto
+  List<Resto> _resto = [];
   List<Resto> get resto {
     return [..._resto];
+  }
+
+  //sqflite
+  List<Resto> _restoOffline = [];
+  List<Resto> get restoOffline {
+    return [..._restoOffline];
   }
 
   Future<void> fetchAndSetResto() async {
@@ -26,27 +32,59 @@ class RestoProvider with ChangeNotifier{
       }
 
       // print(extractedData);
-      final List<Resto> loadedResto = [];
+      // final List<Resto> loadedResto = [];
+      // for (var i = 0; i < extractedData.length; i++) {
+      //   var restoItem = Resto.fromJson(extractedData[i]); 
+      //   loadedResto.add(restoItem);
+      // }
 
-     for (var i = 0; i < extractedData.length; i++) {
-       var restoItem = Resto.fromJson(extractedData[i]); 
-       loadedResto.add(restoItem);
-     }
+      // _resto = loadedResto;
+      // notifyListeners();
 
-      _resto = loadedResto;
-      notifyListeners();
-      print(loadedResto);
+      // _resto.map((resto) {
+      //   DBSql.insert('resto', resto);
+      // }).toList();
+
+      print(['all Instance of Resto']);
+      // print('OFFLINE : $_restoOffline');
+
+      //sqflite
+      for (var i = 0; i < extractedData.length; i++) {
+        DBSql.insert(
+          'resto', 
+          Resto.fromJson(extractedData[i])
+        );
+      }
 
     } catch (error) {
       throw error;
     }
+  }
 
+  //sqflite : get
+  Future<void> fetchAndSetOfflineResto() async {
+    final dataList = await DBSql.getData('resto');
+    _restoOffline = dataList.map((resto) => Resto(
+      id: resto['id'].toString(),
+      nom: resto['nom'],
+      type: resto['type'],
+      ville: resto['ville'],
+      commune: resto['commune'],
+      tel: resto['tel'],
+      longi: resto['longi'],
+      lati: resto['lati'],
+      image: resto['image'],
+    )).toList();
+    notifyListeners();
   }
 
   Resto findById(String id) {
-    return _resto.firstWhere( (resto) => resto.id == id);
+    return _restoOffline.firstWhere( (resto) => resto.id == id);
   }
 
+  // Resto findById(String id) {
+  //   return _resto.firstWhere( (resto) => resto.id == id);
+  // }
 
   Future<void> addResto(Resto resto) async {
     final url = '$publicLink/create.php';
@@ -66,8 +104,7 @@ class RestoProvider with ChangeNotifier{
         })
       );
 
-      print(['all Instance of Resto']);
-      print('post:' + '${response.statusCode}');
+       print('post:' + '${response.statusCode}');
 
       //recup resto to insert in resto list
       // final newResto = Resto(
@@ -90,10 +127,10 @@ class RestoProvider with ChangeNotifier{
     }
   }
 
-  void removeResto(var id) async{
-    _resto.removeWhere((resto) => resto.id == id);
-    notifyListeners();
-  }
+  // void removeResto(var id) async{
+  //   _resto.removeWhere((resto) => resto.id == id);
+  //   notifyListeners();
+  // }
 
   Future<void> updateResto(String id, Resto newResto) async {
     // final restoIndex = _resto.indexWhere((resto) => resto.id == id);

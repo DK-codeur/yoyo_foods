@@ -11,7 +11,6 @@ class Resto with ChangeNotifier {
     final String lati;
     final String image;
 
-
   Resto({
     this.id, 
     this.nom, 
@@ -37,5 +36,17 @@ class Resto with ChangeNotifier {
       image: myjson['image']
     );
   }
+
+  Map<String, dynamic> tojson() => {
+    'id': this.id,
+    'nom': this.nom,
+    'type': this.type,
+    'ville': this.ville,
+    'commune': this.commune,
+    'tel': this.tel,
+    'longi': this.longi,
+    'lati': this.lati,
+    'image': this.image,
+  };
 
 }
